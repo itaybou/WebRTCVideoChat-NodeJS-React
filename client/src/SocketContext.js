@@ -12,6 +12,7 @@ export const ContextProvider = ({ children }) => {
   const [id, setId] = useState(null);
   const [call, setCall] = useState(null);
   const [name, setName] = useState("");
+  const [muted, setMuted] = useState(false);
 
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
@@ -30,7 +31,6 @@ export const ContextProvider = ({ children }) => {
       });
 
     socket.on("id", (currentId) => setId(currentId));
-    console.log();
     socket.on("call_user", ({ from, name: callerName, signal }) => {
       setCall({ isRecievedCall: true, from, callerName, signal });
     });
@@ -89,6 +89,11 @@ export const ContextProvider = ({ children }) => {
     window.location.reload();
   };
 
+  const muteUnmuteMic = () => {
+    setMuted(stream.getAudioTracks()[0].enabled);
+    stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -105,6 +110,8 @@ export const ContextProvider = ({ children }) => {
         leaveCall,
         answerCall,
         declineCall,
+        muted,
+        muteUnmuteMic,
       }}
     >
       {children}

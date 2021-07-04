@@ -1,4 +1,10 @@
-import { Assignment, Phone, PhoneDisabled } from "@material-ui/icons";
+import {
+  Assignment,
+  Phone,
+  PhoneDisabled,
+  VolumeOff,
+  VolumeUp,
+} from "@material-ui/icons";
 import {
   Button,
   Container,
@@ -46,8 +52,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Options = ({ children }) => {
   const classes = useStyles();
-  const { id, callAccepted, callEnded, name, setName, leaveCall, callUser } =
-    useContext(SocketContext);
+  const {
+    id,
+    callAccepted,
+    callEnded,
+    name,
+    setName,
+    leaveCall,
+    callUser,
+    muted,
+    muteUnmuteMic,
+  } = useContext(SocketContext);
   const [idToCall, setIdToCall] = useState("");
 
   return (
@@ -110,6 +125,26 @@ const Options = ({ children }) => {
                 </Button>
               )}
             </Grid>
+            {callAccepted && !callEnded && (
+              <Grid item xs={12} md={12} className={classes.padding}>
+                <Button
+                  variant="contained"
+                  color={muted ? "primary" : "secondary"}
+                  startIcon={
+                    muted ? (
+                      <VolumeUp fontSize="large" />
+                    ) : (
+                      <VolumeOff fontSize="large" />
+                    )
+                  }
+                  fullWidth
+                  onClick={muteUnmuteMic}
+                  className={classes.margin}
+                >
+                  {`${muted ? "UnMute" : "Mute"}`}
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </form>
         {children}

@@ -34,6 +34,7 @@ const VideoPlayer = () => {
     callEnded,
     stream,
     call,
+    muted,
   } = useContext(SocketContext);
 
   return (
